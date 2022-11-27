@@ -125,6 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       current_rotation = DEFAULT_ROTATION;
       current = theTetrominoes[random][current_rotation];
       current_position = STARTING_POSITION;
+      if (scoreDisplay.innerHTML.includes("Game Over")) return;
       draw();
       displayShape();
       addScore();
@@ -258,11 +259,11 @@ document.addEventListener("DOMContentLoaded", () => {
         squares[current_position + index].classList.contains("taken")
       )
     ) {
+      clearInterval(timerId);
+      timerId = null;
       scoreDisplay.innerHTML += " Game Over";
       startBtn.style.display = "none";
       restartBtn.style.display = "block";
-      clearInterval(timerId);
-      timerId = null;
     }
   }
 
@@ -275,6 +276,9 @@ document.addEventListener("DOMContentLoaded", () => {
       squares[i].classList.remove("taken", "tetromino");
       squares[i].style.backgroundColor = "";
     }
-    displaySquares.forEach((square) => square.classList.remove("tetromino"));
+    displaySquares.forEach((square) => {
+      square.classList.remove("tetromino");
+      square.backgroundColor = "";
+    });
   });
 });
