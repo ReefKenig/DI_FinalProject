@@ -3,8 +3,24 @@ import { createStage } from "../gameHelpers";
 
 export const useStage = (player, resetPlayer) => {
   const [stage, setStage] = useState(createStage());
+  const [rowsCleared, setRowsCleared] = useState(0);
 
   useEffect(() => {
+    console.log("use effect");
+    setRowsCleared(0);
+
+    const sweepRows = (newStage) => {
+      return newStage.reduce((accumulator, row) => {
+        if (row.findIndex((cell) => cell[0] === 0) === -1) {
+          setRowsCleared((prev) => prev + 1);
+          accumulator.unshift(new Array(newStage[0].length).fill([0, "clear"]));
+          return accumulator;
+        }
+        accumulator.push(row);
+        return accumulator;
+      }, []);
+    };
+
     const updateStage = (prevStage) => {
       // Flush the stage
       const newStage = prevStage.map((row) => {
@@ -15,7 +31,7 @@ export const useStage = (player, resetPlayer) => {
       player.tetromino.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value !== 0) {
-            newStage[y + player.pos.y][x + player.pos.x] = [
+            newStage[Math.floor(y + player.pos.y)][x + player.pos.x] = [
               value,
               `${player.collided ? "merged" : "clear"}`,
             ];
@@ -23,7 +39,10 @@ export const useStage = (player, resetPlayer) => {
         });
       });
       //   Check if there is a collision
-      if (player.collided) resetPlayer();
+      if (player.collided) {
+        resetPlayer();
+        return sweepRows(newStage);
+      }
 
       return newStage;
     };
@@ -31,5 +50,5 @@ export const useStage = (player, resetPlayer) => {
     setStage((prev) => updateStage(prev));
   }, [player, resetPlayer]);
 
-  return [stage, setStage];
+  return [stage, setStage, rowsCleared];
 };
