@@ -48,7 +48,7 @@ const Tetris = () => {
       console.log("increase level");
       setLevel((prev) => prev + 1);
       // Increase drop speed
-      console.log(`new drop speed: ${1000 / (level + 1) + 200}`);
+      console.log(`new drop speed: ${1000 / (level + 2) + 200}`);
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 }))
@@ -112,7 +112,7 @@ const Tetris = () => {
         <Stage stage={stage} />
         <aside>
           {gameOver ? (
-            <Display gameOver={gameOver} text="Game Over" />
+            <Display gameOver={gameOver} text={`Game Over Score: ${score}`} />
           ) : (
             <div>
               <Display text={`Score: ${score}`} />
