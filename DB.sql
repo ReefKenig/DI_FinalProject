@@ -1,3 +1,4 @@
+-- Users table
 CREATE TABLE users
 (
 	user_id serial NOT NULL PRIMARY KEY,
@@ -7,28 +8,34 @@ CREATE TABLE users
     updated_at timestamp without time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Scores table
 CREATE TABLE scores
 (
 	user_id integer REFERENCES users(user_id),
 	score integer NOT NULL
 );
 
-select MAX(score) as highscore, user_id from scores group by user_id  order by highscore desc limit 3;
+-- General SELECT queries
+SELECT * FROM users
+SELECT * FROM scores
 
-select * from users
-select * from scores
+-- General DELETE queries
+DELETE FROM users
+DELETE FROM scores
 
-delete from users
-delete from scores
+-- General DROP queries
+DROP TABLE scores
+DROP TABLE users
 
-drop table scores
-drop table users
+-- Select all scores of a given user_id in descending order
+SELECT score FROM scores WHERE user_id = <user_id> ORDER BY score DESC;
 
-insert into users(username, password) values('reef', 'rk032000');
-insert into users(username, password) values('anon', '123456');
-insert into users(username, password) values('aaa', '123');
-insert into scores (user_id, score) values(1, 200);
-insert into scores (user_id, score) values(2, 300);
-insert into scores (user_id, score) values(2, 40);
-insert into scores (user_id, score) values(3, 10);
-insert into scores (user_id, score) values(3, 90);
+-- Select the top 3 highest scores
+SELECT MAX(score) AS highscore, user_id FROM scores GROUP BY user_id  ORDER BY highscore DESC LIMIT 3;
+
+-- Select highest score of a given user_id
+SELECT MAX(score) FROM scores WHERE user_id = <user_id>;
+
+-- INSERT queries example
+INSERT INTO users(username, password) VALUES('reef', '123456');
+INSERT INTO scores (user_id, score) VALUES(1, 200);
