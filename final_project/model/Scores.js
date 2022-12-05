@@ -12,7 +12,7 @@ const Scores = db.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    userId: { field: "user_id", type: DataTypes.INTEGER },
+    user_id: { type: DataTypes.INTEGER },
     score: { type: DataTypes.INTEGER },
   },
   { freezeTableName: true, timestamps: false }
