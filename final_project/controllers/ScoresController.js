@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import Scores from "../model/Scores.js";
 import Users from "../model/Users.js";
 
@@ -35,11 +36,23 @@ export const getUserHighScore = async (req, res) => {
 export const getHighestScores = async (req, res) => {
   try {
     const highscores = await Scores.findAll({
-      attributes: [["MAX(score)", "highscore"]],
-      include: [Users],
+      attributes: [
+        [Sequelize.fn("MAX", Sequelize.col("score")), "highscore"],
+        "user.username",
+      ],
+      include: { model: Users },
+      group: ["scores.user_id", "user.user_id"],
+      order: [["highscore", "DESC"]],
+      limit: 3,
     });
-    // res.json({ score: highscores.score, username: highscores });
-    res.json({ highscores: highscores });
+    let response = [];
+    highscores.forEach((score) => {
+      response.push({
+        highscore: score.dataValues.highscore,
+        username: score.user.username,
+      });
+    });
+    res.json({ highscores: response });
   } catch (error) {
     console.log(error);
     res.status(400).json({ msg: "bad request" });
