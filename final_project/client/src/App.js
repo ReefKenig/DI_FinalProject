@@ -1,24 +1,19 @@
-import logo from './logo.svg';
-import './App.css';
+// Imports
+import { useState, createContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+// Components
+import Authentication from "./authentication/Authentication";
+import Navbar from "./components/Navbar";
+
+export const AppContext = createContext(null);
 
 function App() {
+  const [accessToken, setAccessToken] = useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AppContext.Provider value={{ accessToken, setAccessToken }}>
+      <div className="App"></div>
+    </AppContext.Provider>
   );
 }
 

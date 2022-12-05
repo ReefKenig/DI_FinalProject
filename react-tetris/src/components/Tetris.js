@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { createStage, checkCollision } from "../gameHelpers";
 
 //Components
@@ -25,11 +25,14 @@ const Tetris = () => {
     rowsCleared
   );
 
-  const movePlayer = (direction) => {
-    if (!checkCollision(player, stage, { x: direction < 0 ? -1 : 1, y: 0 })) {
-      updatePlayerPos({ x: direction, y: 0 });
-    }
-  };
+  const movePlayer = useCallback(
+    (direction) => {
+      if (!checkCollision(player, stage, { x: direction < 0 ? -1 : 1, y: 0 })) {
+        updatePlayerPos({ x: direction, y: 0 });
+      }
+    },
+    [player, stage]
+  );
 
   const startGame = () => {
     // Reset everything

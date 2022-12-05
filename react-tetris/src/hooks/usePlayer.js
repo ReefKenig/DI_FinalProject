@@ -9,33 +9,36 @@ export const usePlayer = () => {
     collided: false,
   });
 
-  const rotate = (matrix, direction) => {
+  const rotate = useCallback((matrix, direction) => {
     const rotatedShape = matrix.map((_, index) =>
       matrix.map((col) => col[index])
     );
     if (direction > 0) return rotatedShape.map((row) => row.reverse());
     return rotatedShape.reverse();
-  };
+  }, []);
 
-  const playerRotate = (stage, direction) => {
-    const clonedPlayer = { ...player };
-    clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, direction);
+  const playerRotate = useCallback(
+    (stage, direction) => {
+      const clonedPlayer = { ...player };
+      clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, direction);
 
-    const pos = clonedPlayer.pos.x;
-    let offset = 1;
-    while (checkCollision(clonedPlayer, stage, { x: 0, y: 0 })) {
-      clonedPlayer.pos.x += offset;
-      offset = -(offset + (offset > 0 ? 1 : -1));
-      if (offset > clonedPlayer.tetromino[0].length) {
-        rotate(clonedPlayer.tetromino, -direction);
-        clonedPlayer.pos.x = pos;
-        return;
+      const pos = clonedPlayer.pos.x;
+      let offset = 1;
+      while (checkCollision(clonedPlayer, stage, { x: 0, y: 0 })) {
+        clonedPlayer.pos.x += offset;
+        offset = -(offset + (offset > 0 ? 1 : -1));
+        if (offset > clonedPlayer.tetromino[0].length) {
+          rotate(clonedPlayer.tetromino, -direction);
+          clonedPlayer.pos.x = pos;
+          return;
+        }
       }
-    }
-    setPlayer(clonedPlayer);
-  };
+      setPlayer(clonedPlayer);
+    },
+    [player]
+  );
 
-  const updatePlayerPos = ({ x, y, collided }) => {
+  const updatePlayerPos = useCallback(({ x, y, collided }) => {
     setPlayer((prev) => ({
       ...prev,
       pos: {
@@ -44,7 +47,7 @@ export const usePlayer = () => {
       },
       collided,
     }));
-  };
+  }, []);
 
   const resetPlayer = useCallback(() => {
     setPlayer({
