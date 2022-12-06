@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
@@ -12,7 +12,55 @@ const LoginRegisterForm = (props) => {
   const [message, setMessage] = useState("");
   const { setAccessToken } = useContext(AppContext);
 
-  const handleClick = async () => {};
+  const handleClick = async () => {
+    if (props.title === "Register") {
+      try {
+        const response = await axios.post(
+          "/register",
+          {
+            username,
+            password,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("response->", response);
+        if (response.status === 200) {
+          setAccessToken(response.data.token);
+          navigate("/login");
+        }
+      } catch (e) {
+        setMessage(e.response.data.msg);
+      }
+    } else {
+      try {
+        const response = await axios.post(
+          "/login",
+          {
+            username,
+            password,
+          },
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log(response.data.token);
+        if (response.status === 200) {
+          setAccessToken(response.data.token);
+          navigate("/");
+        }
+      } catch (e) {
+        setMessage(e.response.data.msg);
+      }
+    }
+  };
 
   const navigate = useNavigate();
 
@@ -38,6 +86,12 @@ const LoginRegisterForm = (props) => {
           onChange={(e) => setPassword(e.target.value)}
         />
       </Box>
+      <Button variant="contained" onClick={handleClick}>
+        {props.title}
+      </Button>
+      <div>
+        <p>{message}</p>
+      </div>
     </div>
   );
 };

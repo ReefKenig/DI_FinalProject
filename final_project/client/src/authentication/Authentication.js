@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { React, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -13,7 +13,7 @@ export const Authentication = (props) => {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
-        if (response.status == 200) setRedirect(true);
+        if (response.status === 200) setRedirect(true);
       } catch (error) {
         console.log(error);
         navigate("/login");

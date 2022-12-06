@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import axios from "axios";
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { AppContext } from "../App";
 
 const Navbar = () => {
@@ -20,7 +20,7 @@ const Navbar = () => {
         }
       );
       console.log("logout=>", response);
-      if (response.status == 200 || response.status == 204) {
+      if (response.status === 200 || response.status === 204) {
         setAccessToken(null);
         navigate("/login");
       }
@@ -42,7 +42,7 @@ const Navbar = () => {
         <Button component={Link} to={"/account"}>
           Account
         </Button>
-        <Button component={Link} to={"/game"}>
+        <Button component={Link} to={"/"}>
           Tetris
         </Button>
         <Button component={Link} to={"/leaderboard"}>

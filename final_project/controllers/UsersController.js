@@ -20,6 +20,7 @@ export const register = async (req, res) => {
 
 // Login with an existing user
 export const login = async (req, res) => {
+  console.log(req.body);
   try {
     const user = await Users.findAll({
       where: { username: req.body.username },

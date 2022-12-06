@@ -58,3 +58,6 @@ export const getHighestScores = async (req, res) => {
     res.status(400).json({ msg: "bad request" });
   }
 };
+
+// Delete scores by User ID
+export const deleteUserScores = async (req, res) => {};
