@@ -32,7 +32,7 @@ const Navbar = () => {
 
   return (
     <div>
-      <Stack spacing={2} direction="row">
+      <Stack spacing={2} direction="row" position="fixed">
         <Button component={Link} to={"/login"}>
           Login
         </Button>
