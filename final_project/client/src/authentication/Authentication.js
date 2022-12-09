@@ -1,8 +1,8 @@
-import { React, useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export const Authentication = (props) => {
+const Authentication = (props) => {
   const [redirect, setRedirect] = useState(null);
   const navigate = useNavigate();
 
@@ -20,7 +20,9 @@ export const Authentication = (props) => {
       }
     };
     verify();
-  }, []);
+  }, [navigate]);
 
   return redirect ? props.children : <h1>Unauthorized</h1>;
 };
+
+export default Authentication;

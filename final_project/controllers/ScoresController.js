@@ -19,7 +19,8 @@ export const newScore = async (req, res) => {
 
 // Get high score of user_id
 export const getUserHighScore = async (req, res) => {
-  const { user_id } = req.body;
+  const { user_id } = req.query;
+  console.log("user_id: ", user_id);
   try {
     const highscore = await Scores.max("score", {
       where: { user_id: user_id },

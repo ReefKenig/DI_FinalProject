@@ -28,7 +28,6 @@ const LoginRegisterForm = (props) => {
             },
           }
         );
-        console.log("response->", response);
         if (response.status === 200) {
           setAccessToken(response.data.token);
           navigate("/login");
@@ -51,10 +50,9 @@ const LoginRegisterForm = (props) => {
             },
           }
         );
-        console.log(response.data.token);
         if (response.status === 200) {
           setAccessToken(response.data.token);
-          navigate("/");
+          navigate(`/`);
         }
       } catch (e) {
         setMessage(e.response.data.msg);

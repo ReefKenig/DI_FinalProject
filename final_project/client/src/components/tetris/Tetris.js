@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
-import { createStage, checkCollision } from "../../gameHelpers";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 //Components
 import Stage from "../stage/Stage";
@@ -14,6 +15,7 @@ import { useInterval } from "../../hooks/useInterval";
 import { usePlayer } from "../../hooks/usePlayer";
 import { useStage } from "../../hooks/useStage";
 import { useGameStatus } from "../../hooks/useGameStatus";
+import { createStage, checkCollision } from "../../gameHelpers";
 
 const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
@@ -24,6 +26,8 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
+
+  const params = useParams();
 
   const movePlayer = useCallback(
     (direction) => {
@@ -61,23 +65,28 @@ const Tetris = () => {
         console.log("game over");
         setGameOver(true);
         setDropTime(null);
+        postScore(params.userId, score);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
   };
 
-  const keyUp = ({ keyCode }) => {
-    if (!gameOver) {
-      if (keyCode === 40) {
-        console.log("Interval on");
-        setDropTime(1000 / (level + 1) + 200);
-      }
+  const postScore = async (user_id, score) => {
+    try {
+      await axios.post(
+        "/newscore",
+        { user_id, score },
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const dropPlayer = () => {
-    // console.log("Interval off");
-    // setDropTime(null);
     drop();
   };
 
@@ -96,6 +105,8 @@ const Tetris = () => {
         case 40:
           dropPlayer();
           break;
+        default:
+          break;
       }
     }
   };
@@ -105,12 +116,7 @@ const Tetris = () => {
   }, dropTime);
 
   return (
-    <StyledTetrisWrapper
-      role="button"
-      tabIndex="0"
-      onKeyDown={(e) => move(e)}
-      // onKeyUp={keyUp}
-    >
+    <StyledTetrisWrapper role="button" tabIndex="0" onKeyDown={(e) => move(e)}>
       <StyledTetris>
         <Stage stage={stage} />
         <aside>

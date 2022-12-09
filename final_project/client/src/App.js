@@ -7,6 +7,8 @@ import Authentication from "./authentication/Authentication";
 import Navbar from "./components/Navbar";
 import Tetris from "./components/tetris/Tetris";
 import LoginRegisterForm from "./components/LoginRegisterForm";
+import Leaderboard from "./components/Leaderboard";
+import Home from "./components/Home";
 
 export const AppContext = createContext(null);
 
@@ -17,20 +19,28 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Tetris />} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginRegisterForm title="Login" />} />
-          {/* <Route
+          <Route
             path="/register"
             element={<LoginRegisterForm title="Register" />}
           />
           <Route
-            path="/users"
+            path="/game"
             element={
-              <Auth>
-                <Users />
-              </Auth>
+              <Authentication>
+                <Tetris />
+              </Authentication>
             }
-          /> */}
+          />
+          <Route
+            path="/leaderboard"
+            element={
+              <Authentication>
+                <Leaderboard />
+              </Authentication>
+            }
+          />
         </Routes>
       </div>
     </AppContext.Provider>

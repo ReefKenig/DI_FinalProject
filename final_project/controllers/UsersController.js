@@ -20,14 +20,13 @@ export const register = async (req, res) => {
 
 // Login with an existing user
 export const login = async (req, res) => {
-  console.log(req.body);
   try {
     const user = await Users.findAll({
       where: { username: req.body.username },
     });
     const match = await bcrypt.compare(req.body.password, user[0].password);
     if (!match) return res.status(400).json({ msg: "Wrong password" });
-    const userId = user[0].id;
+    const userId = user[0].user_id;
     const username = user[0].username;
     const accessToken = jwt.sign(
       { userId, username },

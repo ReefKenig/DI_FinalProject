@@ -39,10 +39,10 @@ const Navbar = () => {
         <Button component={Link} to={"/register"}>
           Register
         </Button>
-        <Button component={Link} to={"/account"}>
-          Account
-        </Button>
         <Button component={Link} to={"/"}>
+          Home
+        </Button>
+        <Button component={Link} to={"/game"}>
           Tetris
         </Button>
         <Button component={Link} to={"/leaderboard"}>
