@@ -4,24 +4,8 @@ import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const getUserHighScore = async (user_id) => {
-  try {
-    const highscore = await axios.get(
-      "/userhighscore",
-      { params: { user_id: user_id } },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return highscore.data.highscore;
-  } catch (error) {
-    console.log("Error", error);
-  }
-};
-
 const Home = () => {
+  const [userHighscore, setUserHighscore] = useState(0);
   const [token, setToken] = useState({});
   const { accessToken } = useContext(AppContext);
   const navigate = useNavigate();
@@ -33,17 +17,36 @@ const Home = () => {
       const expire = decoded.exp;
       const userId = decoded.userId;
       if (expire * 1000 < new Date().getTime()) navigate("/login");
+      else getUserHighScore(userId);
     } catch (error) {
       navigate("/login");
     }
   }, [accessToken, navigate]);
+
+  const getUserHighScore = async (user_id) => {
+    try {
+      const response = await axios.get(
+        "/userhighscore",
+        { params: { user_id: user_id } },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setUserHighscore(response.data.highscore);
+    } catch (error) {
+      console.log("Error", error);
+      setUserHighscore(0);
+    }
+  };
 
   return (
     <div>
       <h1>Home</h1>
       <h4>username: {token.username}</h4>
       <h4>id: {token.userId}</h4>
-      <h4>highscore:</h4>
+      <h4>highscore: {userHighscore}</h4>
     </div>
   );
 };

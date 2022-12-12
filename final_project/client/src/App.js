@@ -19,7 +19,14 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route
+            path="/"
+            element={
+              <Authentication>
+                <Home />
+              </Authentication>
+            }
+          />
           <Route path="/login" element={<LoginRegisterForm title="Login" />} />
           <Route
             path="/register"

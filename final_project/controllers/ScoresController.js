@@ -7,9 +7,12 @@ Scores.belongsTo(Users, { foreignKey: "user_id" });
 
 // Add new score
 export const newScore = async (req, res) => {
-  const { user_id, score } = req.body;
+  const { userId, score } = req.body;
   try {
-    await Scores.create({ user_id: user_id, score: score });
+    if (!userId) throw error;
+    console.log("id: ", userId);
+    console.log("score: ", score);
+    await Scores.create({ user_id: userId, score: score });
     res.json({ msg: "Score saved!" });
   } catch (error) {
     console.log(error);
@@ -53,9 +56,9 @@ export const getHighestScores = async (req, res) => {
         username: score.user.username,
       });
     });
+    if (!response) res.status(500).json({ msg: "something went wrong" });
     res.json({ highscores: response });
   } catch (error) {
-    console.log(error);
     res.status(400).json({ msg: "bad request" });
   }
 };

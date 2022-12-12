@@ -51,6 +51,7 @@ const LoginRegisterForm = (props) => {
           }
         );
         if (response.status === 200) {
+          console.log(response.data.token);
           setAccessToken(response.data.token);
           navigate(`/`);
         }

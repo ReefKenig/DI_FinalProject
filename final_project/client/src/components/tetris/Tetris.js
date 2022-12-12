@@ -1,6 +1,8 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { AppContext } from "../../App";
 
 //Components
 import Stage from "../stage/Stage";
@@ -18,6 +20,9 @@ import { useGameStatus } from "../../hooks/useGameStatus";
 import { createStage, checkCollision } from "../../gameHelpers";
 
 const Tetris = () => {
+  const [token, setToken] = useState({});
+  const { accessToken } = useContext(AppContext);
+  const [userId, setUserId] = useState(0);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
@@ -27,7 +32,19 @@ const Tetris = () => {
     rowsCleared
   );
 
-  const params = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      const decoded = jwt_decode(accessToken);
+      setToken(decoded);
+      const expire = decoded.exp;
+      if (expire * 1000 < new Date().getTime()) navigate("/login");
+      setUserId(decoded.userId);
+    } catch (error) {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
 
   const movePlayer = useCallback(
     (direction) => {
@@ -65,22 +82,23 @@ const Tetris = () => {
         console.log("game over");
         setGameOver(true);
         setDropTime(null);
-        postScore(params.userId, score);
+        postScore(userId, score);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }
   };
 
-  const postScore = async (user_id, score) => {
+  const postScore = async () => {
     try {
-      await axios.post(
+      const response = await axios.post(
         "/newscore",
-        { user_id, score },
+        { userId, score },
         {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         }
       );
+      if (response.status === 200) console.log("Score saved successfully");
     } catch (error) {
       console.log(error);
     }
