@@ -17,7 +17,7 @@ const Home = () => {
       const expire = decoded.exp;
       const userId = decoded.userId;
       if (expire * 1000 < new Date().getTime()) navigate("/login");
-      else getUserHighScore(userId);
+      getUserHighScore(userId);
     } catch (error) {
       navigate("/login");
     }

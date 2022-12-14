@@ -46,6 +46,7 @@ const Navbar = () => {
         {paths.map((path, index) => {
           return (
             <Button
+              style={{color: "#458cf7"}}
               component={Link}
               to={`/${path}`}
               key={index}

@@ -24,6 +24,6 @@ try {
   console.log(err);
 }
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`Server listening on ${process.env.PORT || 8080}`);
+app.listen(process.env.PORT || 3030, () => {
+  console.log(`Server listening on ${process.env.PORT || 3030}`);
 });

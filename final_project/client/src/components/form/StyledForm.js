@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const StyledTitle = styled.h3`
   font-family: Pixel, Arial, Helvetica, sans-serif;
-  color: #d8d8d8;
+  color: #458cf7;
   font-weight: normal;
 `;
 
@@ -24,4 +24,10 @@ export const StyledButton = styled.button`
   &:hover {
     opacity: 1;
   }
+`;
+
+export const StyledError = styled.p`
+  font-size: 1.1rem;
+  color: red;
+  font-family: Pixel, Arial, Helvetica, sans-serif;
 `;

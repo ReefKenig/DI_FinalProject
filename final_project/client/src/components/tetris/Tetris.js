@@ -25,12 +25,12 @@ const Tetris = () => {
   const [userId, setUserId] = useState(0);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [userHighscore, setUserHighscore] = useState(0);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
-  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
-    rowsCleared
-  );
+  const [score, setScore, rows, setRows, level, setLevel] =
+    useGameStatus(rowsCleared);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,10 @@ const Tetris = () => {
       setToken(decoded);
       const expire = decoded.exp;
       if (expire * 1000 < new Date().getTime()) navigate("/login");
-      setUserId(decoded.userId);
+      else {
+        setUserId(decoded.userId);
+        getUserHighScore(decoded.userId);
+      }
     } catch (error) {
       navigate("/login");
     }
@@ -80,8 +83,27 @@ const Tetris = () => {
         setGameOver(true);
         setDropTime(null);
         postScore(userId, score);
+        if (score > userHighscore) setUserHighscore(score);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
+    }
+  };
+
+  const getUserHighScore = async (user_id) => {
+    try {
+      const response = await axios.get(
+        "/userhighscore",
+        { params: { user_id: user_id } },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setUserHighscore(response.data.highscore);
+    } catch (error) {
+      console.log("Error", error);
+      setUserHighscore(0);
     }
   };
 
@@ -135,6 +157,8 @@ const Tetris = () => {
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
+          <Display text={`Username: ${token.username}`} />
+          <Display text={`Highscore: ${userHighscore}`} />
           {gameOver ? (
             <Display gameOver={gameOver} text={`Game Over Score: ${score}`} />
           ) : (

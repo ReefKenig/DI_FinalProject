@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import { StyledButton, StyledTitle } from "./StyledForm";
+import { StyledButton, StyledTitle, StyledError } from "./StyledForm";
 import { AppContext } from "../../App";
 
 const LoginRegisterForm = (props) => {
@@ -70,17 +70,17 @@ const LoginRegisterForm = (props) => {
       </div>
       <Box component={"form"} sx={{ m: 1 }} noValidate autoComplete={"off"}>
         <TextField
-          sx={{ m: 1, input: { color: "#8958C1" } }}
+          sx={{ m: 1, input: { color: "#458cf7" } }}
           variant="outlined"
-          InputLabelProps={{ style: { color: "#55ABFF" } }}
+          InputLabelProps={{ style: { color: "white" } }}
           id="username"
           label="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
         <TextField
-          sx={{ m: 1, input: { color: "#8958C1" } }}
+          sx={{ m: 1, input: { color: "#458cf7" } }}
           variant="outlined"
-          InputLabelProps={{ style: { color: "#55ABFF" } }}
+          InputLabelProps={{ style: { color: "white" } }}
           id="password"
           label="Password"
           type="password"
@@ -91,7 +91,7 @@ const LoginRegisterForm = (props) => {
         {props.title}
       </StyledButton>
       <div>
-        <p>{message}</p>
+        <StyledError>{message}</StyledError>
       </div>
     </div>
   );
