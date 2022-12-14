@@ -45,7 +45,6 @@ const Home = () => {
     <div>
       <h1>Home</h1>
       <h4>username: {token.username}</h4>
-      <h4>id: {token.userId}</h4>
       <h4>highscore: {userHighscore}</h4>
     </div>
   );

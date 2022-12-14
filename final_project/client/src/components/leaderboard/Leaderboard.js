@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import jwt_decode from "jwt-decode";
-import { AppContext } from "../App";
+import { AppContext } from "../../App";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { StyledBoard } from "./StyledBoard";
 
 const Leaderboard = () => {
   const [highscores, setHighscores] = useState();
@@ -34,20 +34,23 @@ const Leaderboard = () => {
   };
 
   return (
-    <div>
+    <StyledBoard>
       <h1>Leaderboard</h1>
       {!highscores ? (
         <h3>No highscores to display...</h3>
       ) : (
-        highscores.map((element, index) => {
-          return (
-            <h3 key={index}>{`#${index + 1} ${element.username}: ${
-              element.highscore
-            }`}</h3>
-          );
-        })
+        <div>
+          {highscores.map((element, index) => {
+            return (
+              <div key={index} className="row">
+                <h3 className={`rank${index + 1}`}>{`#${index + 1}`}</h3>
+                <h3 className="user">{`${element.username}: ${element.highscore}`}</h3>
+              </div>
+            );
+          })}
+        </div>
       )}
-    </div>
+    </StyledBoard>
   );
 };
 

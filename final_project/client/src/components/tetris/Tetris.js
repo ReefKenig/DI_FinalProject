@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import { AppContext } from "../../App";
 
@@ -69,17 +69,14 @@ const Tetris = () => {
   const drop = () => {
     // Change level with every 10 rows cleared
     if (rows >= (level + 1) * 10) {
-      console.log("increase level");
       setLevel((prev) => prev + 1);
       // Increase drop speed
-      console.log(`new drop speed: ${1000 / (level + 2) + 200}`);
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 }))
       updatePlayerPos({ x: 0, y: 0.5, collided: false });
     else {
       if (player.pos.y < 0.5) {
-        console.log("game over");
         setGameOver(true);
         setDropTime(null);
         postScore(userId, score);

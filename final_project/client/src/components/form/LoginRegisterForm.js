@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { AppContext } from "../App";
+import { StyledButton, StyledTitle } from "./StyledForm";
+import { AppContext } from "../../App";
 
 const LoginRegisterForm = (props) => {
   const [username, setUsername] = useState("");
@@ -53,7 +53,7 @@ const LoginRegisterForm = (props) => {
         if (response.status === 200) {
           console.log(response.data.token);
           setAccessToken(response.data.token);
-          navigate(`/`);
+          navigate(`/game`);
         }
       } catch (e) {
         setMessage(e.response.data.msg);
@@ -66,28 +66,30 @@ const LoginRegisterForm = (props) => {
   return (
     <div>
       <div>
-        <h3>{props.title}</h3>
+        <StyledTitle>{props.title}</StyledTitle>
       </div>
       <Box component={"form"} sx={{ m: 1 }} noValidate autoComplete={"off"}>
         <TextField
-          sx={{ m: 1 }}
+          sx={{ m: 1, input: { color: "#8958C1" } }}
           variant="outlined"
+          InputLabelProps={{ style: { color: "#55ABFF" } }}
           id="username"
           label="Username"
           onChange={(e) => setUsername(e.target.value)}
         />
-        {/* TODO: make field password so text will be hidden */}
         <TextField
-          sx={{ m: 1 }}
+          sx={{ m: 1, input: { color: "#8958C1" } }}
           variant="outlined"
+          InputLabelProps={{ style: { color: "#55ABFF" } }}
           id="password"
           label="Password"
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
       </Box>
-      <Button variant="contained" onClick={handleClick}>
+      <StyledButton variant="contained" onClick={handleClick}>
         {props.title}
-      </Button>
+      </StyledButton>
       <div>
         <p>{message}</p>
       </div>

@@ -6,8 +6,8 @@ import "./App.css";
 import Authentication from "./authentication/Authentication";
 import Navbar from "./components/Navbar";
 import Tetris from "./components/tetris/Tetris";
-import LoginRegisterForm from "./components/LoginRegisterForm";
-import Leaderboard from "./components/Leaderboard";
+import LoginRegisterForm from "./components/form/LoginRegisterForm";
+import Leaderboard from "./components/leaderboard/Leaderboard";
 import Home from "./components/Home";
 
 export const AppContext = createContext(null);
